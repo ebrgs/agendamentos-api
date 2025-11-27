@@ -1,0 +1,23 @@
+### Listar todas as tarefas (GET)
+GET http://localhost:8080/tarefas
+
+### Criar uma nova tarefa (POST)
+POST http://localhost:8080/tarefas
+Content-Type: application/json
+
+{
+  "descricao": "Aprender Spring Boot na Prática",
+  "concluida": false
+}
+
+### Atualizar a tarefa 1 (PUT) - Mude o ID na URL se precisar
+PUT http://localhost:8080/tarefas/1
+Content-Type: application/json
+
+{
+  "descricao": "Aprender SQL (Atualizado via API)",
+  "concluida": true
+}
+
+### Deletar a tarefa 1 (DELETE)
+DELETE http://localhost:8080/tarefas/1
