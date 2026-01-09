@@ -10,6 +10,8 @@ O projeto foca em regras de negócio temporais, validações complexas e uma arq
 
 * **Spring Boot 3.3.5** - Framework principal.
 
+* **Spring Security & JWT** - Autenticação e Autorização segura.
+  
 * **Spring Data JPA** - Persistência de dados.
 
 * **PostgreSQL** - Banco de dados relacional.
@@ -32,6 +34,8 @@ O sistema implementa regras estritas para garantir a integridade da agenda:
 
 3. **Cancelamento Seguro:** Regras para impedir cancelamentos indevidos (ex: agendamentos passados).
 
+4. **Segurança:** Acesso protegido por Login e Senha. Apenas utilizadores autenticados com Token JWT podem interagir com o sistema.
+
 ## ⚙️ Como Rodar o Projeto
 
 ### Opção A: Via Docker (Recomendado 🐳)
@@ -53,11 +57,39 @@ Pré-requisitos: Java 17+ e PostgreSQL instalado.
 CREATE DATABASE estudos_java;
 ```
 2. Configure o `application.properties` com sua senha local.
-
+```application.properties
+api.security.token.secret=sua_senha_secreta;
+```
 3. Execute:
 ```
 mvn spring-boot:run
 ```
+
+## 🔐 Autenticação (Como Entrar)
+
+Como o sistema é seguro, você precisa de um Token para usar os endpoints.
+
+1. **Criar Conta (POST /auth/register):**
+
+```json
+{
+  "login": "seu_usuario",
+  "password": "sua_senha"
+}
+```
+2. **Fazer login (POST /auth/login)**: Envie o mesmo json acima e você receberá um token:
+
+```json
+{
+   "token": "eyJhbGciOiJIUzI1NiIsInR5..."
+}
+```
+3. **Usar o sistema**: Copie o token e envie no Header das requisições:
+
+```
+Authorization: Bearer <token>
+```
+
 ## 📚 Documentação Interativa (Swagger)
 
 Com a aplicação rodando, acesse:
@@ -67,6 +99,8 @@ Com a aplicação rodando, acesse:
 
 | Método | Rota | Descrição | 
  | ----- | ----- | ----- | 
+| `POST` | `/auth/login` | Login para obter o Token JWT |
+| `POST` | `/auth/register` | Criar nova conta de usuário |
 | `GET` | `/agendamentos` | Lista todos os horários agendados. | 
 | `POST` | `/agendamentos` | Cria um novo agendamento (Valida horário e conflitos). | 
 | `DELETE` | `/agendamentos/{id}` | Cancela um agendamento. | 
